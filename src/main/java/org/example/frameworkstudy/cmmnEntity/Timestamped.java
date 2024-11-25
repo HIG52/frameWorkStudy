@@ -1,7 +1,6 @@
-package org.example.frameworkstudy.entity;
+package org.example.frameworkstudy.cmmnEntity;
 
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,9 +14,21 @@ import java.time.LocalDateTime;
 public class Timestamped {
 
     @CreatedDate
+    @Column(name = "CREATEDAT", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "MODIFIEDAT")
     private LocalDateTime modifiedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.modifiedAt = LocalDateTime.now();
+    }
 }

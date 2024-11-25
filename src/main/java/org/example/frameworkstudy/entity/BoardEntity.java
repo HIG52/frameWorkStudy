@@ -3,11 +3,12 @@ package org.example.frameworkstudy.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.frameworkstudy.cmmnEntity.Timestamped;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class BoardEntity {
+public class BoardEntity extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
