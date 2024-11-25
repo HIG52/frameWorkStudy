@@ -1,6 +1,8 @@
 package org.example.frameworkstudy.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.frameworkstudy.cmmnEntity.Timestamped;
@@ -8,12 +10,14 @@ import org.example.frameworkstudy.cmmnEntity.Timestamped;
 @Getter
 @Entity
 @NoArgsConstructor
-public class BoardEntity extends Timestamped {
+@AllArgsConstructor
+@Builder
+public class Boards extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BOARDID", nullable = false)
-    private Integer id;
+    private Integer boardId;
 
     @Column(name = "TITLE", nullable = false)
     private String title;

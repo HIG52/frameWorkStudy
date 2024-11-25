@@ -1,4 +1,4 @@
-package org.example.frameworkstudy.service;
+package org.example.frameworkstudy.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +7,7 @@ import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
+import org.example.frameworkstudy.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

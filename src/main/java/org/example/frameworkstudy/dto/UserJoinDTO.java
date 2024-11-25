@@ -16,8 +16,9 @@ public class UserJoinDTO {
     private String name;
     private String password;
 
-
+    //나중에 정적 팩토리 메서드로 변경해보기
     public UserJoinDTO(String userid) {
         this.userId = userid;
     }
+
 }
