@@ -25,3 +25,7 @@ Content-Type: application/json
   "contents" : "수정된 내용2",
   "author" : "작성자3"
 }
+
+### 게시글 삭제 API
+DELETE http://localhost:8080/api/board/2
+Content-Type: application/json

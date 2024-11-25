@@ -1,6 +1,7 @@
 package org.example.frameworkstudy.controller;
 
 import org.example.frameworkstudy.dto.BoardCreateDTO;
+import org.example.frameworkstudy.dto.BoardDeleteDTO;
 import org.example.frameworkstudy.dto.BoardReadDTO;
 import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.service.BoardService;
@@ -47,7 +48,12 @@ public class BoardController {
         return ResponseEntity.ok(updateBoard);
     }
 
-
+    //게시글 삭제
+    @DeleteMapping("/board/{boardId}")
+    public ResponseEntity<BoardDeleteDTO> deleteBoard(@PathVariable int boardId) {
+        BoardDeleteDTO deleteBoard = boardService.deleteBoard(boardId);
+        return ResponseEntity.ok(deleteBoard);
+    }
 
 
 

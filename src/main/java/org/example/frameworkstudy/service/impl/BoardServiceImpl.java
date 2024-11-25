@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.frameworkstudy.dto.BoardCreateDTO;
+import org.example.frameworkstudy.dto.BoardDeleteDTO;
 import org.example.frameworkstudy.dto.BoardReadDTO;
 import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.entity.Boards;
@@ -72,7 +73,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional
     public BoardUpdateDTO updateBoard(int boardId, BoardUpdateDTO boardUpdateDTO) {
         // 엔티티를 업데이트
         Boards updatedBoard = boardRepository.findById(boardId).map(existingBoard -> {
@@ -83,6 +83,22 @@ public class BoardServiceImpl implements BoardService {
 
         // 변경된 엔티티를 기반으로 DTO 생성
         return new BoardUpdateDTO(updatedBoard.getBoardId(), updatedBoard.getTitle(), updatedBoard.getContents(), updatedBoard.getAuthor(), updatedBoard.getModifiedAt());
+    }
+
+    @Override
+    public BoardDeleteDTO deleteBoard(int boardId) {
+        // 삭제 대상 조회
+        Boards board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("해당 게시판을 찾을수 없습니다."));
+
+        // 필요한 데이터를 DTO로 변환
+        BoardDeleteDTO boardDeleteDTO = new BoardDeleteDTO(board.getBoardId());
+
+        // 삭제 수행
+        boardRepository.deleteById(boardId);
+
+        // 삭제된 데이터 반환
+        return boardDeleteDTO;
     }
 
 }
