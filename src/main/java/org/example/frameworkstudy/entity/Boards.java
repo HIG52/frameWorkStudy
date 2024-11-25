@@ -29,4 +29,16 @@ public class Boards extends Timestamped {
     @Column(name = "AUTHOR", nullable = false, length = 100)
     private String author;
 
+    // 값 변경 메서드
+    public void changeContent(String contents) {
+        if (contents != null) {
+            this.contents = contents;
+        }
+    }
+
+    public void changeTitle(String title) {
+        if (title != null) {
+            this.title = title;
+        }
+    }
 }

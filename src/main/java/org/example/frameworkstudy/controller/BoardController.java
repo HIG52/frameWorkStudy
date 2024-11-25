@@ -1,12 +1,13 @@
 package org.example.frameworkstudy.controller;
 
 import org.example.frameworkstudy.dto.BoardCreateDTO;
+import org.example.frameworkstudy.dto.BoardReadDTO;
+import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.service.BoardService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -24,5 +25,30 @@ public class BoardController {
         BoardCreateDTO writeBoard = boardService.writeBoard(boardCreateDTO);
         return ResponseEntity.ok(writeBoard);
     }
+
+    //게시글 리스트 조회
+    @GetMapping("/boards")
+    public ResponseEntity<List<BoardReadDTO>> listBoards() {
+        List<BoardReadDTO> boardListDTORead = boardService.listBoard();
+        return ResponseEntity.ok(boardListDTORead);
+    }
+
+    //게시글 상세 조회
+    @GetMapping("/board/{boardId}")
+    public ResponseEntity<BoardReadDTO> viewBoard(@PathVariable int boardId) {
+        BoardReadDTO viewBoard = boardService.viewBoard(boardId);
+        return ResponseEntity.ok(viewBoard);
+    }
+
+    //게시글 수정
+    @PutMapping("/board/{boardId}")
+    public ResponseEntity<BoardUpdateDTO> updateBoard(@PathVariable int boardId, @RequestBody BoardUpdateDTO boardUpdateDTO) {
+        BoardUpdateDTO updateBoard = boardService.updateBoard(boardId, boardUpdateDTO);
+        return ResponseEntity.ok(updateBoard);
+    }
+
+
+
+
 
 }
