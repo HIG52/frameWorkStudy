@@ -3,7 +3,8 @@ package org.example.frameworkstudy.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.frameworkstudy.dto.UserDTO;
+import org.example.frameworkstudy.dto.UserJoinDTO;
+import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -17,31 +18,27 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDTO userJoin(UserDTO userDTO) {
+    public UserJoinDTO userJoin(UserJoinDTO userJoinDTO) {
         Users users = Users.builder()
-                .userid(userDTO.getUserId())
-                .name(userDTO.getName())
-                .password(userDTO.getPassword())
+                .userid(userJoinDTO.getUserId())
+                .name(userJoinDTO.getName())
+                .password(userJoinDTO.getPassword())
                 .build();
         Users savedUser = userRepository.save(users);
 
-        return new UserDTO(savedUser.getUserid());
-    }
-
-    /*@Override
-    public UserEntity saveEntiry(UserEntity userEntity) {
-        return userRepository.save(userEntity);
+        return new UserJoinDTO(savedUser.getUserid());
     }
 
     @Override
-    public UserEntity SaveDto(UserDTO userDTO) {
-        UserEntity userEntity = UserEntity.builder()
-                .userid(userDTO.getUserId())
-                .name(userDTO.getName())
-                .password(userDTO.getPassword())
+    public UserLoginDTO userLogin(UserLoginDTO userLoginDTO) {
+        Users users = Users.builder()
+                .userid(userLoginDTO.getUserId())
+                .password(userLoginDTO.getPassword())
                 .build();
-        return saveEntiry(userEntity);
-    }*/
 
+        Users loginUser = userRepository.findByUserid(userLoginDTO.getUserId());
+
+        return new UserLoginDTO(loginUser.getUserid());
+    }
 
 }

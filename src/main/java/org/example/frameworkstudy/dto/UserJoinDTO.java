@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserJoinDTO {
 
     private String userId;
     private String name;
     private String password;
 
 
-    public UserDTO(String userid) {
+    public UserJoinDTO(String userid) {
         this.userId = userid;
     }
 }

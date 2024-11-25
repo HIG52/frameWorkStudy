@@ -1,9 +1,11 @@
 package org.example.frameworkstudy.service;
 
-import org.example.frameworkstudy.dto.UserDTO;
+import org.example.frameworkstudy.dto.UserJoinDTO;
+import org.example.frameworkstudy.dto.UserLoginDTO;
 
 public interface UserService {
 
-    UserDTO userJoin(UserDTO userDTO);
+    UserJoinDTO userJoin(UserJoinDTO userJoinDTO);
 
+    UserLoginDTO userLogin(UserLoginDTO userLoginDTO);
 }
