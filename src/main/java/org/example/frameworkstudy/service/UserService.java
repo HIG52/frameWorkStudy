@@ -7,5 +7,5 @@ public interface UserService {
 
     UserJoinDTO userJoin(UserJoinDTO userJoinDTO);
 
-    UserLoginDTO userLogin(UserLoginDTO userLoginDTO);
+    String userLogin(UserLoginDTO userLoginDTO);
 }

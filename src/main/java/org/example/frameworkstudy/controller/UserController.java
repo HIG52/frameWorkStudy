@@ -28,13 +28,10 @@ public class UserController {
     //로그인
     @GetMapping("/user/login")
     public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO loginDTO, HttpSession session) {
-        UserLoginDTO loginUser = userService.userLogin(loginDTO);
+        String loginUserToken = userService.userLogin(loginDTO);
 
-        if (loginUser != null) {
-            // 로그인 성공 시 세션에 사용자 ID 저장
-            session.setAttribute("userId", loginUser.getUserId());
-            System.out.println("Session Created: " + session.getId());
-            System.out.println("Session UserId: " + session.getAttribute("userId"));
+        if (loginUserToken != null) {
+            System.out.println("loginUserToken = " + loginUserToken);
             return ResponseEntity.ok("Login Success");
         }
 

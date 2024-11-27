@@ -7,6 +7,7 @@ import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
+import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public UserJoinDTO userJoin(UserJoinDTO userJoinDTO) {
@@ -31,15 +33,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginDTO userLogin(UserLoginDTO userLoginDTO) {
-        Users users = Users.builder()
-                .userid(userLoginDTO.getUserId())
-                .password(userLoginDTO.getPassword())
-                .build();
-
+    public String userLogin(UserLoginDTO userLoginDTO) {
+        // 사용자 조회
         Users loginUser = userRepository.findByUserid(userLoginDTO.getUserId());
 
-        return new UserLoginDTO(loginUser.getUserid());
+        if (loginUser == null) {
+            throw new RuntimeException("ID가 존재하지 않습니다.");
+        }
+
+        // TODO : 암호화 / 비밀번호 비교
+        if (!loginUser.getPassword().equals(userLoginDTO.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // JWT 생성 및 반환
+        return jwtTokenProvider.createToken(loginUser.getUserid());
     }
 
 }
