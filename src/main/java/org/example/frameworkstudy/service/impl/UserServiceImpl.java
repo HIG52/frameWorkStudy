@@ -9,6 +9,7 @@ import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
 import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +20,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserJoinDTO userJoin(UserJoinDTO userJoinDTO) {
         Users users = Users.builder()
                 .userid(userJoinDTO.getUserId())
                 .name(userJoinDTO.getName())
-                .password(userJoinDTO.getPassword())
+                .password(passwordEncoder.encode(userJoinDTO.getPassword()))
                 .build();
         Users savedUser = userRepository.save(users);
 
@@ -41,8 +43,8 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("ID가 존재하지 않습니다.");
         }
 
-        // TODO : 암호화 / 비밀번호 비교
-        if (!loginUser.getPassword().equals(userLoginDTO.getPassword())) {
+        // 비밀번호 비교
+        if (!passwordEncoder.matches(userLoginDTO.getPassword(), loginUser.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 

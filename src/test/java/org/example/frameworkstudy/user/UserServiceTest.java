@@ -1,8 +1,10 @@
 package org.example.frameworkstudy.user;
 
 import org.example.frameworkstudy.dto.UserJoinDTO;
+import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
+import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -22,6 +23,9 @@ public class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
 
     @DisplayName("회원가입 테스트")
     @Test
@@ -44,6 +48,21 @@ public class UserServiceTest {
         //assertEquals("이름4", createdUser.getName()): 사용자가 입력한 이름이 "이름4"인지 확인합니다.
         // 즉, 사용자 가입 시 입력한 정보가 올바르게 처리되었는지를 검증합니다.
         assertEquals("testid1", createdUser.getUserId());
+        assertNotEquals("test!@#123", createdUser.getPassword());
+    }
+
+    @Test
+    void testLoginUser(){
+        UserLoginDTO userLoginDTO = new UserLoginDTO("testid1", "test!@#123");
+        Users user = new Users(userLoginDTO.getUserId(), "", userLoginDTO.getPassword());
+
+        Mockito.when(userRepository.findByUserid(userLoginDTO.getUserId())).thenReturn(user);
+        Mockito.when(jwtTokenProvider.createToken(userLoginDTO.getUserId())).thenReturn("mockJwtToken");
+
+        String userJwt = userService.userLogin(userLoginDTO);
+
+        assertNotNull(userJwt);
+        assertEquals("mockJwtToken", userJwt);
 
     }
 

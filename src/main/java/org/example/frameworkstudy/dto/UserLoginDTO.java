@@ -14,7 +14,4 @@ public class UserLoginDTO {
     private String userId;
     private String password;
 
-    public UserLoginDTO(String userid) {
-        this.userId = userid;
-    }
 }

@@ -3,7 +3,7 @@ POST http://localhost:8080/api/user
 Content-Type: application/json
 
 {
-"userId" : "user1",
+"userId" : "user3",
 "name" : "홍준영",
 "password" : "test123!@#"
 }
@@ -13,6 +13,6 @@ GET http://localhost:8080/api/user/login
 Content-Type: application/json
 
 {
-  "userId" : "user1",
+  "userId" : "user3",
   "password" : "test123!@#"
 }
