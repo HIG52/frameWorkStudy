@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.service.UserService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,9 @@ public class UserController {
         String loginUserToken = userService.userLogin(loginDTO);
 
         if (loginUserToken != null) {
-            System.out.println("loginUserToken = " + loginUserToken);
-            return ResponseEntity.ok("Login Success");
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.SET_COOKIE, loginUserToken);
+            return ResponseEntity.status(HttpStatus.OK).headers(headers).body(loginUserToken);
         }
 
         // 로그인 실패 처리

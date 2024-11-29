@@ -48,8 +48,10 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        // JWT 생성 및 반환
-        return jwtTokenProvider.createToken(loginUser.getUserid());
+        // JWT 생성
+        String token = jwtTokenProvider.createToken(loginUser.getUserid());
+
+        return token;
     }
 
 }
