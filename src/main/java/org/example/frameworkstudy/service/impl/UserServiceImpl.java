@@ -7,19 +7,19 @@ import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
-import org.example.frameworkstudy.security.JwtTokenProvider;
+//import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
+@Transactional // TODO
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // JWT 생성
-        String token = jwtTokenProvider.createToken(loginUser.getUserid());
+        String token = "";//jwtTokenProvider.createToken(loginUser.getUserid());
 
         return token;
     }

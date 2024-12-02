@@ -10,6 +10,7 @@ import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.entity.Boards;
 import org.example.frameworkstudy.repository.BoardRepository;
 import org.example.frameworkstudy.service.BoardService;
+import org.example.frameworkstudy.service.ViewCountService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+
+    private final ViewCountService viewCountService;
 
     @Override
     public BoardCreateDTO writeBoard(BoardCreateDTO board) {
@@ -58,7 +61,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardReadDTO viewBoard(int boardId) {
         try{
-            return this.boardRepository.findById(boardId)
+            BoardReadDTO boardReadDTO = this.boardRepository.findById(boardId)
                     .map(board -> new BoardReadDTO(
                             board.getBoardId(),
                             board.getTitle(),
@@ -67,6 +70,9 @@ public class BoardServiceImpl implements BoardService {
                             board.getModifiedAt()
                     ))
                     .orElseThrow(() -> new RuntimeException(boardId + " 번호에 맞는 게시글을 찾을수 없습니다."));
+            // TODO : 조회수 로직 추가 예정
+            viewCountService.incrementViewCount(boardId);
+            return boardReadDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

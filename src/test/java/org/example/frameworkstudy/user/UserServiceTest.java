@@ -4,7 +4,7 @@ import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
-import org.example.frameworkstudy.security.JwtTokenProvider;
+//import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +24,8 @@ public class UserServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    //@MockBean
+    //private JwtTokenProvider jwtTokenProvider;
 
     @DisplayName("회원가입 테스트")
     @Test
@@ -37,7 +37,7 @@ public class UserServiceTest {
         //Mockito는 실제 데이터베이스에 접근하지 않도록 userRepository를 Mock 객체로 설정합니다.
         //thenReturn(user): save 메서드가 호출되면, 미리 준비한 user 객체를 반환하도록 정의합니다.
         // 이렇게 함으로써 데이터베이스 접근 없이도 로직을 테스트할 수 있습니다.
-        Mockito.when(userRepository.save(Mockito.any(Users.class))).thenReturn(user);
+        //Mockito.when(userRepository.save(Mockito.any(Users.class))).thenReturn(user);
 
         // when : 테스트 대상 메서드 호출
         UserJoinDTO createdUser = userService.userJoin(userJoinDTO);
@@ -57,7 +57,7 @@ public class UserServiceTest {
         Users user = new Users(userLoginDTO.getUserId(), "", userLoginDTO.getPassword());
 
         Mockito.when(userRepository.findByUserid(userLoginDTO.getUserId())).thenReturn(user);
-        Mockito.when(jwtTokenProvider.createToken(userLoginDTO.getUserId())).thenReturn("mockJwtToken");
+        //Mockito.when(jwtTokenProvider.createToken(userLoginDTO.getUserId())).thenReturn("mockJwtToken");
 
         String userJwt = userService.userLogin(userLoginDTO);
 

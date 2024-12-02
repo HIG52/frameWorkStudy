@@ -29,6 +29,9 @@ public class Boards extends Timestamped {
     @Column(name = "AUTHOR", nullable = false, length = 100)
     private String author;
 
+    @Column(name = "VIEWCOUNT", nullable = false)
+    private int viewCount;
+
     // 값 변경 메서드
     public void changeContent(String contents) {
         if (contents != null) {
