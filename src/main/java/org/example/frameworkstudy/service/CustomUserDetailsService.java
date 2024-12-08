@@ -12,24 +12,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        // DB에서 사용자 조회
-        Users userEntity = userRepository.findByUserid(userId);
+    public CustomUserDetailsService(UserRepository userRepository) {
 
-        if (userEntity == null) {
-            throw new UsernameNotFoundException("User not found: " + userId);
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        System.out.println("username = " + username);
+        //DB에서 조회
+        Users userData = userRepository.findByUserid(username);
+
+        if (userData != null) {
+            //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
+            return new CustomUserDetails(userData);
         }
 
-        // UserDetails 객체 반환
-        return User.builder()
-                .username(userEntity.getUserid())
-                .password(userEntity.getPassword())
-                .authorities("ROLE_USER") // 예: "ROLE_USER"
-                .build();
+        return null;
     }
 }
 

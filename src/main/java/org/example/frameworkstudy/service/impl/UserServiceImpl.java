@@ -7,19 +7,17 @@ import org.example.frameworkstudy.dto.UserJoinDTO;
 import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.repository.UserRepository;
-//import org.example.frameworkstudy.security.JwtTokenProvider;
 import org.example.frameworkstudy.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional // TODO
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    //private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -52,6 +50,13 @@ public class UserServiceImpl implements UserService {
         String token = "";//jwtTokenProvider.createToken(loginUser.getUserid());
 
         return token;
+    }
+
+    @Override
+    public UserLoginDTO getUserById(String userId) {
+        return userRepository.findById(userId)
+                .map(user -> new UserLoginDTO(user.getUserid(), user.getName(), user.getPassword(), user.getRoleName()))
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
 }

@@ -8,4 +8,6 @@ public interface UserService {
     UserJoinDTO userJoin(UserJoinDTO userJoinDTO);
 
     String userLogin(UserLoginDTO userLoginDTO);
+
+    UserLoginDTO getUserById(String userId);
 }

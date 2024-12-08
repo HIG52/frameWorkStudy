@@ -13,8 +13,8 @@ spring:
       host: localhost
       port: 6379
       connect-timeout: 2000ms
+  jwt:
+    secret: 7Yag7YGwIOu5hOuwgO2CpCDthYzsiqTtirgg7J6F64uI64ukIO2FjOyKpO2KuCA=
 logging:
   level:
     root: debug
-jwt:
-  secret: tmvmfldvmfpdladnjzmwpdlejqmfdbxltlzmfltzldlqslekalks

@@ -11,10 +11,13 @@ Content-Type: application/json
 
 ### 게시글 리스트 조회 API
 GET http://localhost:8080/api/boards
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzM2NDE2NTYsImV4cCI6MTczMzY0MTY5Mn0.BBS-9HGVVDkBV4P_5lW4OvnOBje7x5Yj-6DnFLy8Wvw
 Content-Type: application/json
 
+
 ### 게시글 상세 조회 API
-GET http://localhost:8080/api/board/2
+GET http://localhost:8080/api/board/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3MzM2NDE3MTUsImV4cCI6MTczMzY0MTc1MX0.4MwhGGElAHTLOVa-ZuzGFTg8BZ3b9567pZ62EzphQRs
 Content-Type: application/json
 
 ### 게시글 수정 API

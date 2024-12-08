@@ -4,13 +4,11 @@ package org.example.frameworkstudy.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.frameworkstudy.cmmnEntity.Timestamped;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +23,9 @@ public class Users extends Timestamped {
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+
+    @Column(name = "ROLENAME", nullable = false)
+    private String roleName;
 
 }
 
