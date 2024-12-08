@@ -69,8 +69,8 @@ public class BoardServiceImpl implements BoardService {
                             board.getModifiedAt()
                     ))
                     .orElseThrow(() -> new RuntimeException(boardId + " 번호에 맞는 게시글을 찾을수 없습니다."));
-            // TODO : 조회수 로직 추가 예정
             viewCountService.incrementViewCount(boardId);
+            //System.out.println("viewCountService.getViewCount(boardId) = " + viewCountService.getViewCount(boardId));
             return boardReadDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
