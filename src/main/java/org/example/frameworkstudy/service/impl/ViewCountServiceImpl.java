@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewCountServiceImpl implements ViewCountService {
 
-    private final RedisTemplate<String, Integer> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     private static final String VIEW_COUNT_KEY_PREFIX = "board:views:";
 
-    public ViewCountServiceImpl(RedisTemplate<String, Integer> redisTemplate) {
+    public ViewCountServiceImpl(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -24,7 +24,11 @@ public class ViewCountServiceImpl implements ViewCountService {
     @Override
     public int getViewCount(int boardId) {
         String key = VIEW_COUNT_KEY_PREFIX + boardId;
-        Integer count = redisTemplate.opsForValue().get(key);
-        return count != null ? count : 0;
+        String countStr = redisTemplate.opsForValue().get(key);
+        int count = 0;
+        if (countStr != null) {
+            count = Integer.parseInt(countStr);
+        }
+        return count;
     }
 }
