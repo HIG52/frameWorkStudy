@@ -41,7 +41,6 @@ public class SyncViewCountServiceImpl implements SyncViewCountService {
             if (viewCount != null && viewCount > 0) {
                 // 데이터베이스에 조회수 업데이트
                 boardRepository.incrementViewCount(boardId, viewCount);
-
                 // Redis 데이터 초기화
                 redisTemplate.delete(key);
             }

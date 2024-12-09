@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class BoardServiceImpl implements BoardService {
@@ -27,6 +26,7 @@ public class BoardServiceImpl implements BoardService {
     private final ViewCountService viewCountService;
 
     @Override
+    @Transactional
     public BoardCreateDTO writeBoard(BoardCreateDTO board) {
 
         Boards boards = Boards.builder()
@@ -69,7 +69,9 @@ public class BoardServiceImpl implements BoardService {
                             board.getModifiedAt()
                     ))
                     .orElseThrow(() -> new RuntimeException(boardId + " 번호에 맞는 게시글을 찾을수 없습니다."));
+
             viewCountService.incrementViewCount(boardId);
+
             //System.out.println("viewCountService.getViewCount(boardId) = " + viewCountService.getViewCount(boardId));
             return boardReadDTO;
         } catch (Exception e) {
@@ -78,6 +80,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public BoardUpdateDTO updateBoard(int boardId, BoardUpdateDTO boardUpdateDTO) {
         // 엔티티를 업데이트
         Boards updatedBoard = boardRepository.findById(boardId).map(existingBoard -> {
@@ -91,6 +94,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public BoardDeleteDTO deleteBoard(int boardId) {
         // 삭제 대상 조회
         Boards board = boardRepository.findById(boardId)

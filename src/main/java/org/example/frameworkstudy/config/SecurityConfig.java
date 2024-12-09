@@ -51,53 +51,42 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                    .csrf(AbstractHttpConfigurer::disable)
 
+                    .formLogin(AbstractHttpConfigurer::disable)
 
-        http
-                .csrf(AbstractHttpConfigurer::disable);
+                    .httpBasic(AbstractHttpConfigurer::disable)
 
-        http
-                .formLogin(AbstractHttpConfigurer::disable);
+                    .authorizeHttpRequests((auth) -> auth
+                            .requestMatchers("/login", "/api/user", "/").permitAll()
+                            .anyRequest().authenticated())
 
-        http
-                .httpBasic(AbstractHttpConfigurer::disable);
+                    .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
 
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/api/user", "/").permitAll()
-                        .anyRequest().authenticated());
-        //JWTFilter 등록
-        http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+                    .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
 
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                    .sessionManagement((session) -> session
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                    .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 
-        http
-                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+                        @Override
+                        public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                            CorsConfiguration configuration = new CorsConfiguration();
 
-                        CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                            configuration.setAllowedMethods(Collections.singletonList("*"));
+                            configuration.setAllowCredentials(true);
+                            configuration.setAllowedHeaders(Collections.singletonList("*"));
+                            configuration.setMaxAge(3600L);
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
+                            configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                        return configuration;
-                    }
-                })));
-
-        return http.build();
+                            return configuration;
+                        }
+                    }))).build();
     }
 
 }

@@ -20,19 +20,9 @@ public class UserController {
 
     //회원가입
     @PostMapping("/user")
-    public ResponseEntity<UserJoinDTO> joinUser(@RequestBody UserJoinDTO userJoinDTO) {
-        UserJoinDTO joinUser = userService.userJoin(userJoinDTO);
-        return new ResponseEntity<>(joinUser, HttpStatus.CREATED);
+    public ResponseEntity<Boolean> joinUser(@RequestBody UserJoinDTO userJoinDTO) {
+        boolean joinResult = userService.userJoin(userJoinDTO);
+        return new ResponseEntity<>(joinResult, HttpStatus.CREATED);
     }
-    
-    //로그인
-    /*@PostMapping("/user/login")
-    public String login(@RequestBody UserLoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getUserId(), loginDTO.getPassword())
-        );
-
-
-    }*/
 
 }

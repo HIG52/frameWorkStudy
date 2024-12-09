@@ -4,8 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.frameworkstudy.dto.UserJoinDTO;
-import org.example.frameworkstudy.dto.UserLoginDTO;
 import org.example.frameworkstudy.entity.Users;
+import org.example.frameworkstudy.exception.InvalidUserInputException;
 import org.example.frameworkstudy.repository.UserRepository;
 import org.example.frameworkstudy.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,42 +21,26 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserJoinDTO userJoin(UserJoinDTO userJoinDTO) {
+    public Boolean userJoin(UserJoinDTO userJoinDTO) {
+
+        if(userJoinDTO.getUserId() == null || userJoinDTO.getUserId().isEmpty()) {
+            throw new InvalidUserInputException("사용자 ID는 필수입니다.");
+        }
+
+        if(userJoinDTO.getPassword() == null || userJoinDTO.getPassword().isEmpty()) {
+            throw new InvalidUserInputException("사용자 Password는 필수입니다.");
+        }
+
+        if(userJoinDTO.getName() == null || userJoinDTO.getName().isEmpty()) {
+            throw new InvalidUserInputException("사용자 Name는 필수입니다.");
+        }
+
         Users users = Users.builder()
                 .userid(userJoinDTO.getUserId())
                 .name(userJoinDTO.getName())
                 .password(passwordEncoder.encode(userJoinDTO.getPassword()))
                 .build();
-        Users savedUser = userRepository.save(users);
-
-        return new UserJoinDTO(savedUser.getUserid());
+        userRepository.save(users);
+        return true;
     }
-
-    @Override
-    public String userLogin(UserLoginDTO userLoginDTO) {
-        // 사용자 조회
-        Users loginUser = userRepository.findByUserid(userLoginDTO.getUserId());
-
-        if (loginUser == null) {
-            throw new RuntimeException("ID가 존재하지 않습니다.");
-        }
-
-        // 비밀번호 비교
-        if (!passwordEncoder.matches(userLoginDTO.getPassword(), loginUser.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
-        }
-
-        // JWT 생성
-        String token = "";//jwtTokenProvider.createToken(loginUser.getUserid());
-
-        return token;
-    }
-
-    @Override
-    public UserLoginDTO getUserById(String userId) {
-        return userRepository.findById(userId)
-                .map(user -> new UserLoginDTO(user.getUserid(), user.getName(), user.getPassword(), user.getRoleName()))
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-    }
-
 }
