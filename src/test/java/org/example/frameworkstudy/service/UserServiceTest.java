@@ -5,7 +5,6 @@ import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.exception.InvalidUserInputException;
 import org.example.frameworkstudy.repository.UserRepository;
 import org.example.frameworkstudy.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

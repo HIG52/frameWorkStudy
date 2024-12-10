@@ -1,13 +1,11 @@
 package org.example.frameworkstudy.service;
 
-import org.assertj.core.api.Assertions;
 import org.example.frameworkstudy.dto.BoardCreateDTO;
 import org.example.frameworkstudy.dto.BoardDeleteDTO;
 import org.example.frameworkstudy.dto.BoardReadDTO;
 import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.entity.Boards;
 import org.example.frameworkstudy.exception.InvalidBoardInputException;
-import org.example.frameworkstudy.exception.InvalidUserInputException;
 import org.example.frameworkstudy.repository.BoardRepository;
 import org.example.frameworkstudy.service.impl.BoardServiceImpl;
 import org.example.frameworkstudy.service.impl.ViewCountServiceImpl;
@@ -225,7 +223,7 @@ public class BoardServiceTest {
         //then
 
         verify(boardRepository).findById(boardId);
-        assertThat(boardDeleteDTO.getBoardId()).isEqualTo(boards.getBoardId());
+        assertThat(boardDeleteDTO.getBoardId()).isEqualTo(delete.getBoardId());
 
     }
 
