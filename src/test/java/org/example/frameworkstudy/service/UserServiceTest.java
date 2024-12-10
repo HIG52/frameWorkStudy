@@ -5,6 +5,7 @@ import org.example.frameworkstudy.entity.Users;
 import org.example.frameworkstudy.exception.InvalidUserInputException;
 import org.example.frameworkstudy.repository.UserRepository;
 import org.example.frameworkstudy.service.impl.UserServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,14 +29,19 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
+
+    private final String testId = "testid";
+    private final String testPassword = "testpassword";
+    private final String testName = "testname";
+
     @Test
     @DisplayName("회원가입 했을때 true를 반환한다.")
     void userJoinTest(){
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
-        userJoinDTO.setUserId("testid");
-        userJoinDTO.setPassword("123456");
-        userJoinDTO.setName("testname");
+        userJoinDTO.setUserId(testId);
+        userJoinDTO.setPassword(testPassword);
+        userJoinDTO.setName(testName);
 
         Users users = new Users();
         users.setUserid(userJoinDTO.getUserId());
@@ -58,16 +64,13 @@ public class UserServiceTest {
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
         userJoinDTO.setUserId("");
-        userJoinDTO.setPassword("123456");
-        userJoinDTO.setName("testname");
+        userJoinDTO.setPassword(testPassword);
+        userJoinDTO.setName(testName);
 
         Users users = new Users();
         users.setUserid(userJoinDTO.getUserId());
         users.setName(userJoinDTO.getName());
         users.setPassword(userJoinDTO.getPassword());
-
-        //given(passwordEncoder.encode("123456")).willReturn("123456");
-        //given(userRepository.save(any(Users.class))).willReturn(users);
 
         //when / then
         assertThatThrownBy(() -> userServiceImpl.userJoin(userJoinDTO))
@@ -81,9 +84,9 @@ public class UserServiceTest {
     void noPasswordJoinTest(){
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
-        userJoinDTO.setUserId("testUser");
+        userJoinDTO.setUserId(testId);
         userJoinDTO.setPassword("");
-        userJoinDTO.setName("testname");
+        userJoinDTO.setName(testName);
 
         Users users = new Users();
         users.setUserid(userJoinDTO.getUserId());
@@ -102,8 +105,8 @@ public class UserServiceTest {
     void noNameJoinTest(){
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
-        userJoinDTO.setUserId("testUser");
-        userJoinDTO.setPassword("123456");
+        userJoinDTO.setUserId(testId);
+        userJoinDTO.setPassword(testPassword);
         userJoinDTO.setName("");
 
         Users users = new Users();
