@@ -13,7 +13,7 @@ import org.example.frameworkstudy.cmmnEntity.Timestamped;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users extends Timestamped {
+public class Users extends Timestamped { //검증 로직 추가해보기
     @Id
     @Column(name = "USERID", nullable = false, length = 50)
     private String userid;

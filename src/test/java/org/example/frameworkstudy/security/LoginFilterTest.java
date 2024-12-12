@@ -8,6 +8,7 @@ import org.example.frameworkstudy.service.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -55,16 +56,23 @@ class LoginFilterTest {
         //given
         given(request.getParameter("username")).willReturn(testId);
         given(request.getParameter("password")).willReturn(testPassword);
-
-        Authentication expectedAuth = mock(Authentication.class);
         given(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .willReturn(expectedAuth);
+                .willReturn(authentication);
+        //UsernamePasswordAuthenticationToken 토큰 생성 검증
+        ArgumentCaptor<UsernamePasswordAuthenticationToken> tokenCaptor =
+                ArgumentCaptor.forClass(UsernamePasswordAuthenticationToken.class);
 
         //when
         Authentication result = loginFilter.attemptAuthentication(request, response);
 
         //then
-        Assertions.assertThat(result).isSameAs(expectedAuth);
+        Assertions.assertThat(result).isSameAs(authentication);
+
+        verify(authenticationManager).authenticate(tokenCaptor.capture());
+        UsernamePasswordAuthenticationToken capturedToken = tokenCaptor.getValue();
+
+        Assertions.assertThat(capturedToken.getPrincipal()).isEqualTo(testId);
+        Assertions.assertThat(capturedToken.getCredentials()).isEqualTo(testPassword);
     }
 
     @Test
@@ -72,8 +80,6 @@ class LoginFilterTest {
     void successfulAuthenticationTest() {
         //given
         String userId = testId;
-
-
 
         //when
 

@@ -1,6 +1,5 @@
 package org.example.frameworkstudy.service;
 
-import jakarta.transaction.Transactional;
 import org.example.frameworkstudy.dto.BoardCreateDTO;
 import org.example.frameworkstudy.dto.BoardDeleteDTO;
 import org.example.frameworkstudy.dto.BoardReadDTO;

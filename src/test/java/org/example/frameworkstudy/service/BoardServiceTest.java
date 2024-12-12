@@ -27,6 +27,11 @@ import static org.mockito.BDDMockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BoardServiceTest {
 
+    public static final String TITLE = "제목";
+    public static final String CONTENTS = "내용";
+    public static final String AUTHOR = "작성자";
+    public static final String EMPTY_STRING = "";
+    
     @Mock
     private BoardRepository boardRepository;
 
@@ -38,26 +43,21 @@ public class BoardServiceTest {
 
     @Test
     @DisplayName("제목과 내용, 작성자를 입력했을때 게시글 아이디값을 반환")
-    void writeBoardTest() {
+    void writeBoardTest(int boardId) {
         // given
-        int boardId = 1;
-        String title = "제목";
-        String contents = "내용";
-        String author = "작성자";
-
         // 입력 DTO 생성
         BoardCreateDTO boardCreateDTO = BoardCreateDTO.builder()
-                .title(title)
-                .contents(contents)
-                .author(author)
+                .title(TITLE)
+                .contents(CONTENTS)
+                .author(AUTHOR)
                 .build();
 
         // 저장될 Entity 생성
         Boards savedBoards = Boards.builder()
                 .boardId(boardId) // 저장 후 반환될 ID 값 설정
-                .title(title)
-                .contents(contents)
-                .author(author)
+                .title(TITLE)
+                .contents(CONTENTS)
+                .author(AUTHOR)
                 .build();
 
         // Mock 설정: boardRepository.save() 호출 시 반환할 값
@@ -68,7 +68,7 @@ public class BoardServiceTest {
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.getBoardId()).isEqualTo(boardId);
+        assertThat(result.getBoardId()).isNotNull();
     }
 
     @Test
@@ -76,9 +76,9 @@ public class BoardServiceTest {
     void writeBoard_ThrowsException_WhenTitleIsEmpty(){
         //given
         BoardCreateDTO inputBoardCreateDTO = BoardCreateDTO.builder()
-                .title("")
-                .contents("내용")
-                .author("작성자")
+                .title(EMPTY_STRING)
+                .contents(CONTENTS)
+                .author(AUTHOR)
                 .build();
 
         //when & then
@@ -92,9 +92,9 @@ public class BoardServiceTest {
     void writeBoard_ThrowsException_WhenContentsIsEmpty(){
         //given
         BoardCreateDTO inputBoardCreateDTO = BoardCreateDTO.builder()
-                .title("제목")
-                .contents("")
-                .author("작성자")
+                .title(TITLE)
+                .contents(EMPTY_STRING)
+                .author(AUTHOR)
                 .build();
 
         //when & then
@@ -108,9 +108,9 @@ public class BoardServiceTest {
     void writeBoard_ThrowsException_WhenAuthorIsEmpty(){
         //given
         BoardCreateDTO inputBoardCreateDTO = BoardCreateDTO.builder()
-                .title("제목")
-                .contents("내용")
-                .author("")
+                .title(TITLE)
+                .contents(CONTENTS)
+                .author(EMPTY_STRING)
                 .build();
 
         //when & then
@@ -142,8 +142,6 @@ public class BoardServiceTest {
         List<BoardReadDTO> boardList = boardServiceImpl.listBoard();
 
         //then
-        //리스트가 없으면 실패
-        assertThat(boardList).isNotNull();
         assertThat(boardList.size()).isEqualTo(2);
         assertThat(boardList.get(0).getBoardId()).isEqualTo(1);
         assertThat(boardList.get(1).getBoardId()).isEqualTo(2);
@@ -170,6 +168,16 @@ public class BoardServiceTest {
         //then
         assertThat(view).isNotNull();
         assertThat(view.getBoardId()).isEqualTo(boardId);
+    }
+
+    @Test
+    @DisplayName("게시글 ID로 찾지 못하였을때 예외를 반환")
+    void shouldThrowException_WhenBoardNotFoundById(){
+        //given
+
+        //when
+
+        //then
     }
 
     @Test

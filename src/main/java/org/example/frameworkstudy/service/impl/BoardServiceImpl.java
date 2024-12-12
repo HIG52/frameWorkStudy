@@ -8,14 +8,15 @@ import org.example.frameworkstudy.dto.BoardDeleteDTO;
 import org.example.frameworkstudy.dto.BoardReadDTO;
 import org.example.frameworkstudy.dto.BoardUpdateDTO;
 import org.example.frameworkstudy.entity.Boards;
-import org.example.frameworkstudy.exception.InvalidBoardInputException;
 import org.example.frameworkstudy.repository.BoardRepository;
 import org.example.frameworkstudy.service.BoardService;
 import org.example.frameworkstudy.service.ViewCountService;
+import org.example.frameworkstudy.validator.BoardValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,17 +31,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public BoardCreateDTO writeBoard(BoardCreateDTO boardCreateDTO) {
 
-        if(boardCreateDTO.getTitle().isEmpty()) {
-            throw new InvalidBoardInputException("게시글 제목이 비어있습니다.");
-        }
-
-        if(boardCreateDTO.getContents().isEmpty()) {
-            throw new InvalidBoardInputException("게시글 내용이 비어있습니다.");
-        }
-
-        if(boardCreateDTO.getAuthor().isEmpty()) {
-            throw new InvalidBoardInputException("게시글 작성자가 비어있습니다.");
-        }
+        BoardValidator.checkBoardCreatDTO(boardCreateDTO);
 
         Boards boards = Boards.builder()
                 .author(boardCreateDTO.getAuthor())
@@ -122,5 +113,8 @@ public class BoardServiceImpl implements BoardService {
         // 삭제된 데이터 반환
         return boardDeleteDTO;
     }
+
+
+
 
 }

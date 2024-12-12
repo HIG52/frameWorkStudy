@@ -19,6 +19,7 @@ import static org.mockito.BDDMockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    public static final String EMPTY_STRING = "";
     @Mock
     private PasswordEncoder passwordEncoder;
 
@@ -62,7 +63,7 @@ public class UserServiceTest {
     void noUserIdJoinTest(){
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
-        userJoinDTO.setUserId("");
+        userJoinDTO.setUserId(EMPTY_STRING);
         userJoinDTO.setPassword(testPassword);
         userJoinDTO.setName(testName);
 
@@ -84,7 +85,7 @@ public class UserServiceTest {
         //given
         UserJoinDTO userJoinDTO = new UserJoinDTO();
         userJoinDTO.setUserId(testId);
-        userJoinDTO.setPassword("");
+        userJoinDTO.setPassword(EMPTY_STRING);
         userJoinDTO.setName(testName);
 
         Users users = new Users();
@@ -106,7 +107,7 @@ public class UserServiceTest {
         UserJoinDTO userJoinDTO = new UserJoinDTO();
         userJoinDTO.setUserId(testId);
         userJoinDTO.setPassword(testPassword);
-        userJoinDTO.setName("");
+        userJoinDTO.setName(EMPTY_STRING);
 
         Users users = new Users();
         users.setUserid(userJoinDTO.getUserId());

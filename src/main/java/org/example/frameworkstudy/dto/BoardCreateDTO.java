@@ -17,11 +17,9 @@ public class BoardCreateDTO {
     private String contents;
     private String author;
 
-
     public BoardCreateDTO(boolean isSuccess, Integer boardId) {
         this.isSuccess = isSuccess;
         this.boardId = boardId;
     }
-
 
 }
